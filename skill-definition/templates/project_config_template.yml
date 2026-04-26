@@ -1,0 +1,68 @@
+# ============================================================
+# 项目配置文件模板
+# 由 Clinical Analysis Skill 在项目初始化时自动生成
+# ============================================================
+
+project:
+  name: "项目名称"
+  description: "项目描述"
+  design: "队列研究"                    # RCT / 队列研究 / 病例对照 / 横断面 / 描述性
+  sample_size: 0
+  target_journal: "SCI Q1/Q2"
+  reporting_standard: "STROBE"         # CONSORT / STROBE / PRISMA
+
+variables:
+  outcome: ""                          # 结局变量名
+  outcome_type: "binary"               # binary / continuous / survival
+  exposure: []                         # 暴露/预测变量
+  covariates: []                       # 协变量
+  time_variable: ""                    # 生存分析用（随访时间）
+  event_variable: ""                   # 生存分析用（事件发生）
+  group_variable: ""                   # 分组变量
+  id_variable: ""                      # 患者标识符
+
+paths:
+  raw_data: "01_RawData"
+  preprocessed: "02_PreprocessedData"
+  methods: "03_AnalysisMethods"
+  outputs: "04_Outputs"
+  reference: "Reference"
+  manuscript: "05_Manuscript"
+  progress: "06_ProgressReports"
+  global: "00_Global"
+
+# ============================================================
+# methods_to_run: 只列出用户确认的分析方法
+# 编号按实际选用顺序编排，不是固定编号
+# 示例：如果只选了基线表和Logistic回归，则为：
+#   - 01_BaselineTable
+#   - 02_LogisticRegression
+# ============================================================
+methods_to_run:
+  - 01_BaselineTable
+  - 02_GroupComparison
+  # - LogisticRegression
+  # - SurvivalAnalysis
+  # - SubgroupAnalysis
+  # - SensitivityAnalysis
+  # - CorrelationAnalysis
+  # - SimpleML
+
+language:
+  manuscript: "zh-CN"                  # 论文语言
+  figures_tables: "en"                 # 图表语言
+  statistics: "R"                      # 统计主语言
+
+quality:
+  journal_level: "Q1"                  # Q1 / Q2
+  figure_dpi: 300
+  figure_format: "png"                 # png / pdf / tiff
+  figure_font: "Arial"
+  figure_font_size: 10
+
+analysis:
+  missing_threshold_low: 0.05          # 缺失率 < 5% 可删除/填充
+  missing_threshold_mid: 0.20          # 缺失率 5-20% 需插补
+  missing_threshold_high: 0.20         # 缺失率 > 20% 讨论是否保留
+  significance_level: 0.05
+  multiple_comparison: "fdr"           # fdr / bonferroni / none
