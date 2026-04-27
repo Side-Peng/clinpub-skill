@@ -1,0 +1,276 @@
+#!/usr/bin/env node
+
+/**
+ * clinpub installer
+ *
+ * Installs clinpub as Claude Code skills.
+ *
+ * Usage:
+ *   npx clinpub                      # Interactive prompt
+ *   npx clinpub --global             # Install to ~/.claude/
+ *   npx clinpub --local              # Install to ./.claude/
+ *   npx clinpub --global --uninstall # Remove global install
+ *
+ * What it does:
+ *   1. Converts commands/clinpub/*.md → skills/clinpub-<name>/SKILL.md
+ *   2. Copies agents/, pipeline/, scripts/, hooks/ → shared resource dir
+ *   3. Rewrites @-references to point to installed location
+ */
+
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const readline = require('readline');
+
+// ─── Colors ────────────────────────────────────────────────────────
+const cyan = '\x1b[36m';
+const green = '\x1b[32m';
+const yellow = '\x1b[33m';
+const red = '\x1b[31m';
+const bold = '\x1b[1m';
+const dim = '\x1b[37m';
+const reset = '\x1b[0m';
+
+// ─── Package info ──────────────────────────────────────────────────
+const pkg = require('../package.json');
+const SOURCE_DIR = path.join(__dirname, '..');
+
+// ─── Parse args ────────────────────────────────────────────────────
+const args = process.argv.slice(2);
+const hasGlobal = args.includes('--global') || args.includes('-g');
+const hasLocal = args.includes('--local') || args.includes('-l');
+const hasUninstall = args.includes('--uninstall') || args.includes('-u');
+
+// ─── Paths ─────────────────────────────────────────────────────────
+function getPaths(isGlobal) {
+  const home = os.homedir();
+  const claudeRoot = isGlobal
+    ? path.join(home, '.claude')
+    : path.join(process.cwd(), '.claude');
+
+  return {
+    claudeRoot,
+    skillsDir: path.join(claudeRoot, 'skills'),
+    resourceDir: path.join(claudeRoot, 'clinpub'),  // shared resources
+    // Tilde form for @-references in SKILL.md (portable across machines)
+    resourceRef: isGlobal
+      ? '~/.claude/clinpub'
+      : './.claude/clinpub',
+  };
+}
+
+// ─── Frontmatter extraction ────────────────────────────────────────
+function extractFrontmatter(content) {
+  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { frontmatter: null, body: content };
+  return { frontmatter: match[1], body: match[2] };
+}
+
+function extractField(fm, field) {
+  // Handle quoted strings and multiline
+  const regex = new RegExp(`^${field}:\\s*["']?([^"'\\n]+)["']?`, 'm');
+  const match = fm.match(regex);
+  return match ? match[1].trim() : null;
+}
+
+function extractMultilineField(fm, field) {
+  const regex = new RegExp(`^${field}:\\s*\\n((?:\\s+-\\s+.+\\n?)*)`, 'm');
+  const match = fm.match(regex);
+  return match ? match[1] : '';
+}
+
+// ─── Convert command → skill ───────────────────────────────────────
+function convertCommandToSkill(content, skillName, resourceRef) {
+  const { frontmatter, body } = extractFrontmatter(content);
+  if (!frontmatter) return content;
+
+  const description = extractField(frontmatter, 'description') || '';
+  const argumentHint = extractField(frontmatter, 'argument-hint');
+  const toolsBlock = extractMultilineField(frontmatter, 'allowed-tools');
+
+  // Rebuild frontmatter in skill format
+  let fm = `---\nname: ${skillName}\ndescription: ${yamlQuote(description)}\n`;
+  if (argumentHint) fm += `argument-hint: ${yamlQuote(argumentHint)}\n`;
+  if (toolsBlock) fm += `allowed-tools:\n${toolsBlock}`;
+  fm += '\n---';
+
+  // Rewrite @-references to point to installed resource dir
+  // resourceRef is already in tilde form (e.g., ~/.claude/clinpub or ./.claude/clinpub)
+  let newBody = body;
+  newBody = newBody.replace(/@\.\//g, `@${resourceRef}/`);
+  newBody = newBody.replace(/@pipeline\//g, `@${resourceRef}/pipeline/`);
+  newBody = newBody.replace(/@agents\//g, `@${resourceRef}/agents/`);
+  newBody = newBody.replace(/@scripts\//g, `@${resourceRef}/scripts/`);
+  newBody = newBody.replace(/@hooks\//g, `@${resourceRef}/hooks/`);
+
+  return `${fm}\n${newBody}`;
+}
+
+function yamlQuote(s) {
+  if (!s) return '""';
+  // If contains special chars, quote it
+  if (/[:#{}[\],&*?|>!%@`]/.test(s) || s.includes('\n')) {
+    return `"${s.replace(/"/g, '\\"')}"`;
+  }
+  return s;
+}
+
+// ─── Copy directory recursively ────────────────────────────────────
+function copyDir(src, dest) {
+  fs.mkdirSync(dest, { recursive: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+// ─── Remove directory recursively ──────────────────────────────────
+function removeDir(dir) {
+  if (fs.existsSync(dir)) {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+// ─── Install ───────────────────────────────────────────────────────
+function install(isGlobal) {
+  const { claudeRoot, skillsDir, resourceDir, resourceRef } = getPaths(isGlobal);
+  const location = isGlobal ? 'global' : 'local';
+  const locationPath = isGlobal ? '~/.claude/' : './.claude/';
+
+  console.log(`\n${bold}${cyan}clinpub v${pkg.version}${reset} — Clinical Data Analysis Pipeline`);
+  console.log(`${dim}Installing ${location} to ${locationPath}${reset}\n`);
+
+  // 1. Create directories
+  fs.mkdirSync(skillsDir, { recursive: true });
+  fs.mkdirSync(resourceDir, { recursive: true });
+
+  // 2. Copy shared resources (agents, pipeline, scripts, hooks)
+  console.log(`${dim}Copying resources...${reset}`);
+  const resourceDirs = ['agents', 'pipeline', 'scripts', 'hooks'];
+  for (const dir of resourceDirs) {
+    const src = path.join(SOURCE_DIR, dir);
+    if (fs.existsSync(src)) {
+      copyDir(src, path.join(resourceDir, dir));
+    }
+  }
+  // Copy CLAUDE.md as reference
+  const claudeMd = path.join(SOURCE_DIR, 'CLAUDE.md');
+  if (fs.existsSync(claudeMd)) {
+    fs.copyFileSync(claudeMd, path.join(resourceDir, 'CLAUDE.md'));
+  }
+  console.log(`  ${green}✓${reset} Resources → ${resourceDir}`);
+
+  // 3. Convert commands → skills
+  const commandsDir = path.join(SOURCE_DIR, 'commands', 'clinpub');
+  if (!fs.existsSync(commandsDir)) {
+    console.error(`${red}ERROR: commands/clinpub/ not found${reset}`);
+    process.exit(1);
+  }
+
+  const commandFiles = fs.readdirSync(commandsDir).filter(f => f.endsWith('.md'));
+  let installed = 0;
+
+  for (const file of commandFiles) {
+    const baseName = file.replace('.md', '');
+    const skillName = `clinpub-${baseName.replace(/:/g, '-')}`;
+    const skillDir = path.join(skillsDir, skillName);
+
+    // Clean old version
+    removeDir(skillDir);
+    fs.mkdirSync(skillDir, { recursive: true });
+
+    // Convert command → skill
+    const content = fs.readFileSync(path.join(commandsDir, file), 'utf8');
+    const skillContent = convertCommandToSkill(content, skillName, resourceRef);
+
+    fs.writeFileSync(path.join(skillDir, 'SKILL.md'), skillContent);
+    console.log(`  ${green}✓${reset} /${baseName} → skills/${skillName}/SKILL.md`);
+    installed++;
+  }
+
+  // 4. Summary
+  console.log(`\n${green}${bold}Installed ${installed} skills${reset}`);
+  console.log(`${dim}Resources at: ${resourceDir}${reset}`);
+  console.log(`\n${bold}Usage:${reset}`);
+  console.log(`  /clinpub                    # Full 5-phase pipeline`);
+  console.log(`  /clinpub-data2idea <file>   # Topic mining`);
+  console.log(`  /clinpub-analysis           # Statistical analysis`);
+  console.log(`  /clinpub-writing            # Manuscript writing`);
+  console.log(`  /clinpub-review             # Peer review simulation`);
+  console.log(`\n${dim}Restart Claude Code to load new skills.${reset}\n`);
+}
+
+// ─── Uninstall ─────────────────────────────────────────────────────
+function uninstall(isGlobal) {
+  const { skillsDir, resourceDir } = getPaths(isGlobal);
+  const location = isGlobal ? 'global' : 'local';
+
+  console.log(`\n${bold}${yellow}Uninstalling clinpub (${location})${reset}\n`);
+
+  // Remove skill directories
+  if (fs.existsSync(skillsDir)) {
+    const entries = fs.readdirSync(skillsDir, { withFileTypes: true });
+    let removed = 0;
+    for (const entry of entries) {
+      if (entry.isDirectory() && entry.name.startsWith('clinpub-')) {
+        removeDir(path.join(skillsDir, entry.name));
+        console.log(`  ${green}✓${reset} Removed skills/${entry.name}`);
+        removed++;
+      }
+    }
+    console.log(`\n${green}Removed ${removed} skills${reset}`);
+  }
+
+  // Remove resource directory
+  if (fs.existsSync(resourceDir)) {
+    removeDir(resourceDir);
+    console.log(`  ${green}✓${reset} Removed ${resourceDir}`);
+  }
+
+  console.log(`\n${green}${bold}clinpub uninstalled.${reset}\n`);
+}
+
+// ─── Interactive prompt ────────────────────────────────────────────
+async function promptLocation() {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const ask = (q) => new Promise(resolve => rl.question(q, resolve));
+
+  console.log(`\n${bold}${cyan}clinpub v${pkg.version}${reset}\n`);
+  console.log(`Install location:`);
+  console.log(`  ${bold}1${reset} — Global  (all projects, ~/.claude/)`);
+  console.log(`  ${bold}2${reset} — Local   (current project only, ./.claude/)\n`);
+
+  const choice = await ask(`${cyan}>${reset} Choose (1/2): `);
+  rl.close();
+
+  return choice.trim() === '1';
+}
+
+// ─── Main ──────────────────────────────────────────────────────────
+async function main() {
+  if (hasUninstall) {
+    uninstall(hasGlobal || !hasLocal);
+    return;
+  }
+
+  if (hasGlobal) {
+    install(true);
+  } else if (hasLocal) {
+    install(false);
+  } else {
+    // Interactive
+    const isGlobal = await promptLocation();
+    install(isGlobal);
+  }
+}
+
+main().catch(err => {
+  console.error(`${red}Error: ${err.message}${reset}`);
+  process.exit(1);
+});
