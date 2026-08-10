@@ -12,6 +12,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 - **文献搜索脚本升级**: 同步 ncbi-search v3——新增 `pmc_fetch.py`（PMC 开放获取全文）、`test_ncbi.py`（单元测试），升级 `ncbi_utils.py`（SQLite 缓存）/`ncbi_search.py`（EFetch 摘要）/`pubmed_search.py`（宽松 NL 策略）/`pubmed_fetch.py`（自动分批）至三平台一致（claude-code / codex / qoder）。
 - **CI 一致性检查**: 纳入新增脚本 `pmc_fetch.py`、`test_ncbi.py`；同步 `data_profiler.py` 至三平台一致。
+- **手稿输出收敛为单一文件**: 写作管线（claude-code / codex / qoder）手稿输出改为 `05_Manuscript/manuscript.md` 单一文件，各章节按 IMRAD 顺序直接追加，移除 `05_Manuscript/sections/` 段文件目录。
+- **安装命令统一执行上下文**: README 与各平台 INSTALL.md 统一为仓库根目录执行安装命令（`git clone` + `cd clinpub`）；新增 `codex/marketplace.json` 与 Qoder 安装说明（v1.0.0 首发）。
+
+### Removed
+- **GitHub 自动 Release workflow**: 删除 `.github/workflows/release.yml`，推送 `v*` 标签不再自动创建 GitHub Release，改为手动发布。
+- **codex 遗留文件清理**: 移除 `codex/clinpub/scripts/scripts/` 嵌套目录（脚本上移一层）、失效的 `hooks/hooks.json`、`CONVERSION_SUMMARY.md` 及过时设计文档（`docs/superpowers/`）。
 
 ## [2.3.0] - 2026-07-28
 
