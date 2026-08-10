@@ -4,6 +4,30 @@
 
 > **声明：** 本插件辅助临床研究工作流程，所有输出应由领域专家审核后方可用于决策。
 
+## 安装
+
+### 方式一：应用内导入（推荐）
+
+在 Qoder 的**插件设置**中选择"从本地文件夹导入插件"，选择本仓库的 `qoder/` 目录即可。
+
+### 方式二：手动复制到插件目录
+
+Qoder 复用 Claude 插件缓存目录结构（`~/.claude/plugins/cache/clinpub/clinpub/<版本号>/`）。在仓库根目录执行：
+
+**Windows PowerShell**
+
+```powershell
+Copy-Item -Recurse .\qoder\ "$env:USERPROFILE\.claude\plugins\cache\clinpub\clinpub\1.0.0\"
+```
+
+**macOS / Linux**
+
+```bash
+cp -r qoder/ ~/.claude/plugins/cache/clinpub/clinpub/1.0.0/
+```
+
+安装后**重启 Qoder**，在对话中输入 `@编排器` 启动项目，或 `@项目初始化` 开始新项目。
+
 ## 适用角色
 
 - **临床研究人员** — 从原始数据到 SCI 论文的全流程辅助

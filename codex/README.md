@@ -22,23 +22,25 @@ ClinPub is available for multiple AI coding assistants:
 
 ### OpenAI Codex
 
+> 以下命令在仓库根目录（克隆后的 `clinpub/`）执行。
+
 ```bash
 # From local path
-cd codex
-codex plugin install ./clinpub
+codex plugin install ./codex/clinpub
 
-# Or add to personal marketplace
-codex plugin marketplace add ./codex
+# Or add to personal marketplace (use absolute path)
+codex plugin marketplace add /path/to/clinpub/codex
 codex plugin install clinpub
 ```
 
 ### Claude Code
 
 ```bash
-# Install as Claude Code Plugin (development)
+# Install as Claude Code Plugin (development, from repo root)
 claude --plugin-dir ./claude-code
 
 # Install from marketplace (production)
+claude plugin marketplace add Side-Peng/clinpub
 claude plugin install clinpub
 ```
 
@@ -158,10 +160,9 @@ clinpub:next-step
 
 ## 📄 Documentation
 
-- [Codex Installation Guide](codex/INSTALL.md)
-- [Conversion Summary](codex/CONVERSION_SUMMARY.md)
-- [Claude Code Documentation](claude-code/CLAUDE.md)
-- [Qoder Documentation](qoder/README.md)
+- [Codex Installation Guide](INSTALL.md)
+- [Claude Code Documentation](../claude-code/CLAUDE.md)
+- [Qoder Documentation](../qoder/README.md)
 
 ## 🤝 Contributing
 

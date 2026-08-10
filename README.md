@@ -18,9 +18,9 @@
 
 | 平台 | 目录 | 状态 | 安装方式 |
 |------|------|------|----------|
-| [Claude Code](claude-code/) | `claude-code/` | v2.2.1 稳定版 | `claude --plugin-dir ./claude-code` 或 marketplace |
-| [OpenAI Codex](codex/) | `codex/` | ✅ v2.2.0 稳定版 | `codex plugin install ./codex/clinpub` 或 marketplace |
-| [QoderWork](qoder/) | `qoder/` | v1.0.0 首发版 | 复制到 `~/.qoderworkcn/plugins-custom/clinpub` |
+| [Claude Code](claude-code/) | `claude-code/` | ✅ v2.3.0 稳定版 | `claude plugin install clinpub`（Marketplace）或 `claude --plugin-dir ./claude-code`（本地） |
+| [OpenAI Codex](codex/) | `codex/clinpub/` | ✅ v2.2.0 稳定版 | `codex plugin install ./codex/clinpub`（本地）或 Marketplace |
+| [Qoder](qoder/) | `qoder/` | v1.0.0 首发版 | 应用内导入插件，或复制 `qoder/` 到插件目录 |
 
 ## 📋 管线概览
 
@@ -41,38 +41,69 @@ Phase 0          Phase 1         Phase 2           Phase 3         Phase 4
 
 ## 🚀 快速开始
 
+> **前提**：所有命令均在**仓库根目录**执行（先克隆并进入目录）：
+>
+> ```bash
+> git clone https://github.com/Side-Peng/clinpub.git
+> cd clinpub
+> ```
+
 ### Claude Code
 
-```bash
-# 开发模式
-claude --plugin-dir ./clinpub/claude-code
+**方式一：Marketplace（推荐，正式使用）**
 
-# Marketplace（先添加源再安装）
-claude plugin marketplace add Side-Peng/clinpub
-claude plugin install clinpub
+```bash
+claude plugin marketplace add Side-Peng/clinpub   # 添加 GitHub 插件源（需联网）
+claude plugin install clinpub                     # 安装插件
+```
+
+安装后**重启 Claude Code**，输入 `/clinpub:overview` 验证插件已加载。
+
+**方式二：本地目录（开发调试，免发布）**
+
+```bash
+claude --plugin-dir ./claude-code
 ```
 
 详见 [claude-code/INSTALL.md](claude-code/INSTALL.md)
 
 ### OpenAI Codex
 
-```bash
-# 本地安装
-cd codex
-codex plugin install ./clinpub
+**方式一：本地目录**
 
-# 或添加到个人市场
-codex plugin marketplace add ./codex
+```bash
+codex plugin install ./codex/clinpub
+```
+
+**方式二：个人 Marketplace**
+
+```bash
+codex plugin marketplace add <本仓库绝对路径>/codex   # 例如 /Users/you/clinpub/codex
 codex plugin install clinpub
 ```
 
 详见 [codex/INSTALL.md](codex/INSTALL.md)
 
-### QoderWork
+### Qoder
+
+**方式一：应用内导入（推荐）**
+
+在 Qoder 的插件设置中选择**从本地文件夹导入插件**，选择本仓库的 `qoder/` 目录即可。
+
+**方式二：手动复制到插件目录**
+
+Qoder 复用 Claude 插件缓存目录结构（`~/.claude/plugins/cache/clinpub/clinpub/<版本号>/`）：
+
+Windows PowerShell（在仓库根目录执行）：
+
+```powershell
+Copy-Item -Recurse .\qoder\ "$env:USERPROFILE\.claude\plugins\cache\clinpub\clinpub\1.0.0\"
+```
+
+macOS / Linux：
 
 ```bash
-# 将 qoder/ 目录复制到插件目录
-cp -r qoder/ ~/.qoderworkcn/plugins-custom/clinpub
+cp -r qoder/ ~/.claude/plugins/cache/clinpub/clinpub/1.0.0/
 ```
 
 安装后在对话中 `@编排器` 启动项目，或 `@项目初始化` 开始新项目。
@@ -200,7 +231,6 @@ pip install pandas numpy requests openpyxl
 |------|------|
 | [Claude Code 文档](claude-code/CLAUDE.md) | Claude Code 插件详细文档 |
 | [Codex 安装指南](codex/INSTALL.md) | Codex 插件安装说明 |
-| [Codex 转换摘要](codex/CONVERSION_SUMMARY.md) | Claude Code → Codex 转换说明 |
 | [Qoder 文档](qoder/README.md) | QoderWork 插件文档 |
 | [CHANGELOG.md](CHANGELOG.md) | 版本历史 |
 

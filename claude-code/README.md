@@ -66,15 +66,10 @@ claude plugin install clinpub
 ### 方式二：本地开发
 
 ```bash
+# 在仓库根目录（克隆后的 clinpub/）执行
 git clone https://github.com/Side-Peng/clinpub.git
-cd clinpub/clinpub/claude-code
-claude --plugin-dir .
-```
-
-或从项目目录：
-
-```bash
-claude --plugin-dir ./clinpub/claude-code
+cd clinpub
+claude --plugin-dir ./claude-code
 ```
 
 ### 方式三：手动安装
@@ -363,15 +358,10 @@ claude plugin install clinpub
 ### Option 2: Local Development
 
 ```bash
+# From the repository root (cloned clinpub/ directory)
 git clone https://github.com/Side-Peng/clinpub.git
-cd clinpub/clinpub/claude-code
-claude --plugin-dir .
-```
-
-Or from the project root:
-
-```bash
-claude --plugin-dir ./clinpub/claude-code
+cd clinpub
+claude --plugin-dir ./claude-code
 ```
 
 ### Option 3: Manual Install

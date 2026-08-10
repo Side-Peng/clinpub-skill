@@ -21,8 +21,8 @@ ClinPub is a structured clinical data analysis and publication pipeline that act
 ### As Codex Plugin
 
 ```bash
-# From local path
-codex plugin install ./clinpub
+# From local path (run from the repository root)
+codex plugin install ./codex/clinpub
 
 # From marketplace
 codex plugin install clinpub

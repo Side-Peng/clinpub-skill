@@ -4,6 +4,8 @@
 
 ### From Plugin Marketplace (Recommended)
 
+> 以下命令在仓库根目录（克隆后的 `clinpub/`）执行。
+
 ```bash
 # Add the marketplace source first
 claude plugin marketplace add Side-Peng/clinpub
@@ -11,24 +13,22 @@ claude plugin marketplace add Side-Peng/clinpub
 claude plugin install clinpub
 ```
 
+安装后重启 Claude Code，输入 `/clinpub:overview` 验证插件已加载。
+
 ### From Local Source (Development)
 
 ```bash
-cd clinpub/claude-code
-claude --plugin-dir .
-```
-
-Or from the project root:
-
-```bash
-claude --plugin-dir ./clinpub/claude-code
+# 在仓库根目录执行
+git clone https://github.com/Side-Peng/clinpub.git
+cd clinpub
+claude --plugin-dir ./claude-code
 ```
 
 ### From Git Repository
 
 ```bash
 git clone https://github.com/Side-Peng/clinpub.git
-cd clinpub/clinpub/claude-code
+cd clinpub/claude-code
 claude --plugin-dir .
 ```
 
@@ -117,7 +117,7 @@ claude plugin uninstall clinpub
 | Problem | Solution |
 |---------|----------|
 | Commands not found after install | Restart Claude Code to reload plugins |
-| `/clinpub:overview` not appearing | Run `claude --plugin-dir ./clinpub/claude-code` again, then restart |
+| `/clinpub:overview` not appearing | Run `claude --plugin-dir ./claude-code` (from repo root) again, then restart |
 | R package errors | Run the `install.packages()` command above |
 | Python import errors | Run `pip install -r requirements.txt` |
 | PubMed search fails | Set `NCBI_API_KEY` env var |

@@ -6,19 +6,21 @@
 
 #### Option 1: Local Development
 
+> 以下命令在仓库根目录（克隆后的 `clinpub/`）执行。
+
 ```bash
 # Clone the repository
 git clone https://github.com/Side-Peng/clinpub.git
-cd clinpub/codex
+cd clinpub
 
 # Install as local plugin
-codex plugin install ./clinpub
+codex plugin install ./codex/clinpub
 ```
 
 #### Option 2: Add to Personal Marketplace
 
 ```bash
-# Add to personal marketplace
+# Add to personal marketplace (use absolute path to the codex/ directory)
 codex plugin marketplace add /path/to/clinpub/codex
 
 # Then install from marketplace
@@ -34,13 +36,14 @@ codex plugin install clinpub
 claude plugin marketplace add Side-Peng/clinpub
 
 # Install plugin
-claude plugin install clinpub@clinpub
+claude plugin install clinpub
 ```
 
 #### Option 2: Local Development
 
 ```bash
 git clone https://github.com/Side-Peng/clinpub.git
+cd clinpub
 claude --plugin-dir ./claude-code
 ```
 
@@ -104,8 +107,8 @@ export UNPAYWALL_EMAIL="your_email@example.com"
 ### For Codex Plugin
 
 ```bash
-# Validate plugin structure
-codex plugin validate ./clinpub
+# Validate plugin structure (from repo root)
+codex plugin validate ./codex/clinpub
 
 # Check installed plugins
 codex plugin list
@@ -114,8 +117,8 @@ codex plugin list
 ### For Claude Code Plugin
 
 ```bash
-# Validate plugin structure
-claude plugin validate ./clinpub --strict
+# Validate plugin structure (from repo root)
+claude plugin validate ./claude-code --strict
 
 # Check installed plugins
 claude plugin list
