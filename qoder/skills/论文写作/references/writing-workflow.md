@@ -141,13 +141,13 @@
 
 ## 终稿拼接协议
 
-### 1. 段落合并
+### 1. 正文准备
 
-按顺序读取:
-1. `05_Manuscript/sections/01-introduction.md`
-2. `05_Manuscript/sections/02-methods.md`
-3. `05_Manuscript/sections/03-results.md`
-4. `05_Manuscript/sections/04-discussion.md`
+各段已在撰写阶段按 IMRAD 顺序直接追加写入 `05_Manuscript/manuscript.md`（带 `## {Section}` 标题），无需文件合并：
+1. `## Introduction`
+2. `## Methods`
+3. `## Results`
+4. `## Discussion`
 
 ### 2. 占位符替换
 
@@ -254,7 +254,7 @@ python scripts/pubmed_fetch.py <PMID1> <PMID2> ... --format json
 - Humanizer 通过
 - 语言一致
 - 不编造引用或数据
-- 各段 sections/ 文件保留
+- 各段按 IMRAD 顺序追加写入 manuscript.md（不生成 sections/ 文件）
 - 终稿 manuscript.md 存在
 - 无残留占位符
 - 引用连续编号

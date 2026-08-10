@@ -1,6 +1,6 @@
 ﻿---
 name: writing
-description: "Phase 3 orchestration: IMRAD manuscript pipeline with two modes. Sequential mode: each section → reference-agent pre-search → writer-agent draft → user review pause. Batch mode (一键成稿): bulk reference search for all sections → bulk writing without pause → single final review. Shared reference library (JSON) for cross-section deduplication. Placeholders for cross-references. Final concatenation produces manuscript.md."
+description: "Phase 3 orchestration: IMRAD manuscript pipeline with two modes. Sequential mode: each section → reference-agent pre-search → writer-agent draft → user review pause. Batch mode (一键成稿): bulk reference search for all sections → bulk writing without pause → single final review. Shared reference library (JSON) for cross-section deduplication. Placeholders for cross-references. Sections are appended directly into a single manuscript.md (no sections/ files); final processing produces the complete manuscript.md."
 ---
 
 <purpose>
@@ -160,11 +160,8 @@ See `@./agents/reference-agent.md` for detailed search protocol.
 - 使用 shared reference library (`Reference/reference_library.json`) 查询已有引用
 - 使用占位符进行交叉引用：`{{Table:N}}` `{{Figure:N}}` `{{Method:name}}` `{{Section:name}}`（D-11）
 - 自然成段论述，不使用 bullet point（D-04）
-- 每段写入 `05_Manuscript/sections/`，命名规则：
-  - `05_Manuscript/sections/01-introduction.md`
-  - `05_Manuscript/sections/02-methods.md`
-  - `05_Manuscript/sections/03-results.md`
-  - `05_Manuscript/sections/04-discussion.md`
+- 每段撰写完成后直接追加写入 `05_Manuscript/manuscript.md`（文件不存在则创建），段首带 `## {段名}` 标题（`## Introduction` / `## Methods` / `## Results` / `## Discussion`），按 IMRAD 顺序累积成完整手稿
+- 不再生成 `05_Manuscript/sections/` 独立段文件（D-15）：手稿只输出 `05_Manuscript/manuscript.md` 一份文件
 
 #### Step C: 用户审阅暂停（checkpoint）（D-01）
 
@@ -173,7 +170,7 @@ See `@./agents/reference-agent.md` for detailed search protocol.
 ```markdown
 ## {段名} 初稿完成 — 请审阅
 
-已写入 `05_Manuscript/sections/{文件名}`。
+已追加至 `05_Manuscript/manuscript.md`（`## {段名}` 部分）。
 
 ### 审阅要点
 - [ ] {段名}的结构和内容是否符合预期
@@ -237,7 +234,7 @@ See `@./agents/reference-agent.md` for detailed search protocol.
 
 撰写规则与 `sequential_section_writing` Step B 完全一致（D-02~D-13 约束均适用）。
 
-每段写入 `05_Manuscript/sections/` 对应文件。
+每段撰写完成后直接追加写入 `05_Manuscript/manuscript.md`（带 `## {段名}` 标题，按 IMRAD 顺序累积，不生成 sections/ 文件）。
 
 ---
 
@@ -250,15 +247,14 @@ See `@./agents/reference-agent.md` for detailed search protocol.
 
 已生成完整 IMRAD 手稿：
 - 05_Manuscript/manuscript.md — 完整终稿（{word_count} 字, {reference_count} 篇引用）
-- 05_Manuscript/sections/ — 各段独立文件
 
 ### 各段概要
-| 段落 | 字数 | 引用数 | 文件 |
-|------|------|--------|------|
-| Introduction | {n} | {n} | sections/01-introduction.md |
-| Methods | {n} | {n} | sections/02-methods.md |
-| Results | {n} | {n} | sections/03-results.md |
-| Discussion | {n} | {n} | sections/04-discussion.md |
+| 段落 | 字数 | 引用数 |
+|------|------|--------|
+| Introduction | {n} | {n} |
+| Methods | {n} | {n} |
+| Results | {n} | {n} |
+| Discussion | {n} | {n} |
 
 ### 审阅要点
 - [ ] 各段结构和内容是否符合预期
@@ -304,18 +300,18 @@ Final verification:
 7. Word count within target journal limits
 8. References de-duplicated
 9. MANIFEST.yaml exists in `05_Manuscript/` listing clinpub-verifier as consumer
-10. 分段的完整性：05_Manuscript/sections/ 下 4 个段文件全部存在
-11. 各段文件非空，不含 AI-template 模式
+10. 手稿完整性：05_Manuscript/manuscript.md 中 4 个 IMRAD 段落（`## Introduction` / `## Methods` / `## Results` / `## Discussion`）全部存在
+11. 各段落非空，不含 AI-template 模式
 
 If manifest is missing, write it here.
 </step>
 
 <step name="concatenate_manuscript" priority="high">
-执行终稿拼接协议（Concatenation Protocol）将各段合并为最终 manuscript.md。
+执行终稿处理协议（Concatenation Protocol）将 manuscript.md 处理为完整终稿。
 
 按 `@./pipeline/references/concatenation-protocol.md` 执行以下步骤：
 
-1. **段落合并**: 按 IMRAD 顺序读取 `05_Manuscript/sections/01-introduction.md` ~ `04-discussion.md`
+1. **正文准备**: 各段已在撰写阶段按 IMRAD 顺序直接追加写入 `05_Manuscript/manuscript.md`（带 `## {Section}` 标题），无需文件合并；直接以 manuscript.md 为处理对象
 2. **占位符替换**:
    - `{{Table:N}}` → 按 IMRAD 顺序全局编号（Table 1, Table 2...）
    - `{{Figure:N}}` → 按 IMRAD 顺序全局编号（Figure 1, Figure 2...）
@@ -361,7 +357,7 @@ If manifest is missing, write it here.
    [1] ...
    [2] ...
    ```
-6. **更新 MANIFEST.yaml**: 写入 `05_Manuscript/MANIFEST.yaml`（声明 manuscript.md + sections/ 下所有文件，consumer 为 clinpub-verifier）
+6. **更新 MANIFEST.yaml**: 写入 `05_Manuscript/MANIFEST.yaml`（声明 manuscript.md，consumer 为 clinpub-verifier）
 7. **更新引用库**: 追加 `concatenated: true` 标记，更新时间戳
 
 验证（执行后检查）：
@@ -378,14 +374,13 @@ If manifest is missing, write it here.
 拼接完成后输出：
 
 ```
-✅ 终稿拼接完成
+✅ 终稿处理完成
 
 文件:
 - 05_Manuscript/manuscript.md — 完整终稿（{word_count} 字, {reference_count} 篇引用）
-- 05_Manuscript/sections/ — 各段独立文件
 
 下一步:
-- 检查 manuscript.md 确认拼接质量
+- 检查 manuscript.md 确认终稿质量
 - 如需要调整 → 直接编辑 manuscript.md（非重写原则下，手动修正局部问题）
 - 如确认无误 → 进入最终 checkpoint_confirm
 ```
@@ -429,7 +424,7 @@ See @./pipeline/workflows/milestone.md for full protocol.
 </process>
 
 <success_criteria>
-- Complete IMRAD manuscript in 05_Manuscript/ (each chapter as draft.md)
+- Complete IMRAD manuscript in 05_Manuscript/manuscript.md (single file, no sections/)
 - citation_map.md and references.bib in Reference/
 - All citations have DOIs
 - All figures/tables referenced in text
@@ -437,14 +432,13 @@ See @./pipeline/workflows/milestone.md for full protocol.
 - Humanizer review passed
 - User has reviewed and approved draft
 - 各段（Introduction/Methods/Results/Discussion）独立完成引用和撰写
-- 每段写入 05_Manuscript/sections/ 独立文件
+- 每段按 IMRAD 顺序追加写入 05_Manuscript/manuscript.md（不生成 sections/ 独立文件）
 - 每段撰写前 reference-agent 完成文献搜索
 - 每段撰写后用户完成审阅
 - 引用库引用不重复
 - 各段使用占位符进行交叉引用
 - 全文各段合计 >5000 字
 - 05_Manuscript/manuscript.md 存在，包含 YAML frontmatter 和完整 IMRAD 结构
-- 05_Manuscript/sections/ 下 4 个段文件保留
 - 全文中无残留占位符
 - 引用从 [1] 开始连续编号，文末 References 区完整
 - word_count > 5000, reference_count >= 20

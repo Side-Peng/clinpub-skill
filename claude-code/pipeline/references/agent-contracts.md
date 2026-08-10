@@ -56,7 +56,7 @@ Each agent contract defines:
 | **Inputs** | `04_Outputs/` (analysis results), `Reference/` (citations), `project_config.yml`, study type template, `pipeline/references/journal_standards.md` |
 | **Outputs** | `05_Manuscript/manuscript.md`, `05_Manuscript/abstract.md`, `05_Manuscript/improvement_plan.md`, `05_Manuscript/final/response_letter.md`, `05_Manuscript/final/` |
 | **Communication** | Reads from `04_Outputs/` and `Reference/` (validates their MANIFEST.yaml first). Writes to `05_Manuscript/` (writes MANIFEST.yaml after completion). |
-| **Output naming conventions** | Chapter drafts: `draft-{chapter}.md` (one per IMRAD section). Compiled manuscript: `manuscript.md`. Improvement plan: `improvement_plan.md`. Reviewer comments (post-submission): `reviewer_comments.md`. Response letter: `response_letter.md`. Final: `final/manuscript.md`. |
+| **Output naming conventions** | Manuscript: `manuscript.md` (single file; sections appended in IMRAD order). Improvement plan: `improvement_plan.md`. Reviewer comments (post-submission): `reviewer_comments.md`. Response letter: `response_letter.md`. Final: `final/manuscript.md`. |
 | **Pre-conditions** | `04_Outputs/` non-empty with study-type-appropriate minimum outputs (see table below). `Reference/citation_map.md` exists with >= 10 entries. `project_config.yml` has target_journal set. |
 | **Completion markers** | Complete IMRAD structure, all citations have DOIs, Humanizer checklist passed |
 

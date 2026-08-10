@@ -31,7 +31,7 @@ Does NOT write a response letter and does NOT simulate reviewers. For post-submi
 <process>
 Execute the improving workflow from pipeline/workflows/improving.md end-to-end.
 
-Prerequisite: a manuscript draft exists (`05_Manuscript/manuscript.md` or `05_Manuscript/sections/`). If not, tell the user to run `/clinpub:writing` first.
+Prerequisite: a manuscript draft exists (`05_Manuscript/manuscript.md`). If not, tell the user to run `/clinpub:writing` first.
 </process>
 
 <success_criteria>

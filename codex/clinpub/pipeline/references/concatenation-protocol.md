@@ -1,51 +1,36 @@
 # 终稿拼接协议 (Concatenation Protocol)
 
-> Phase 3: 各段独立撰写完成后，执行本协议合并为终稿。
+> Phase 3: 各段撰写完成后，执行本协议将 manuscript.md 处理为完整终稿。
 > 原则：拼接而非重写（WRITE-02），引用统一整理，占位符替换。
 > 前置规范：参见 `pipeline/references/reference-library.md` 获取引用库 JSON schema、占位符正则模式和 Vancouver 格式规范。
 
 ## 输入输出
 
-### 输入（由分段撰写流程 `sequential_section_writing` 产生）
+### 输入（由分段撰写流程 `sequential_section_writing` / `batch_writing` 产生）
 
 | 文件 | 来源 |
 |------|------|
-| `05_Manuscript/sections/01-introduction.md` | writer-agent 撰写 |
-| `05_Manuscript/sections/02-methods.md` | writer-agent 撰写 |
-| `05_Manuscript/sections/03-results.md` | writer-agent 撰写 |
-| `05_Manuscript/sections/04-discussion.md` | writer-agent 撰写 |
+| `05_Manuscript/manuscript.md` | 各段按 IMRAD 顺序直接追加写入（带 `## {Section}` 标题），不生成 sections/ 文件 |
 | `Reference/reference_library.json` | reference-agent 逐段更新 |
 
 ### 输出
 
 | 文件 | 说明 |
 |------|------|
-| `05_Manuscript/manuscript.md` | 完整终稿（YAML frontmatter + 合并且重编号） |
-| `05_Manuscript/sections/*.md` | 各段独立文件（保留原始文件，不做修改，与 manuscript.md 内的段内容一致） |
+| `05_Manuscript/manuscript.md` | 完整终稿（YAML frontmatter + 正文 + 统一编号 References 区） |
 
 ---
 
 ## 拼接步骤
 
-### Step 1: 段落合并
+### Step 1: 正文准备
 
-按 IMRAD 顺序读取各段文件并拼接：
+段落已在撰写阶段直接写入 `05_Manuscript/manuscript.md`，无需文件合并：
 
-```
-merged_content = ""
-for section in [introduction, methods, results, discussion]:
-    filepath = "05_Manuscript/sections/{序号}-{段名}.md"
-    content = read(filepath)
-    merged_content += content + "\n\n"
-```
+- 每段以 `## {Section}` 标题（`## Introduction` / `## Methods` / `## Results` / `## Discussion`）为界，按 IMRAD 顺序（D-01）累积
+- 本协议直接以 manuscript.md 为处理对象，各段内容即正文
 
-段间用一个空行分隔。不修改原文内容——拼接而非重写（WRITE-02）。
-
-各段 IMRAD 顺序（引入到 discussion，与撰写顺序 D-01 一致）：
-1. Introduction（01-introduction.md）
-2. Methods（02-methods.md）
-3. Results（03-results.md）
-4. Discussion（04-discussion.md）
+不修改原文内容——拼接而非重写（WRITE-02）。
 
 注意：不包含 Abstract——Abstract 在 manuscript.md 完成后由 writer-agent 最后撰写（遵循 writer-agent.md 的 `draft_abstract` 步骤）。
 
@@ -55,24 +40,23 @@ for section in [introduction, methods, results, discussion]:
 
 #### 2a. Table/Figure 全局编号（D-12）
 
-Table 和 Figure 各自独立编号，按 IMRAD 段顺序扫描：
+Table 和 Figure 各自独立编号，按正文出现顺序扫描（IMRAD 段顺序）：
 
 ```
 table_counter = 1
 figure_counter = 1
 
-for section in [introduction, methods, results, discussion]:
-    content = sections[section]
-    
-    # 替换 Table 占位符
-    while content contains {{Table:\d+}}:
-        replace {{Table:N}} → Table {table_counter}
-        table_counter += 1
-    
-    # 替换 Figure 占位符
-    while content contains {{Figure:\d+}}:
-        replace {{Figure:N}} → Figure {figure_counter}
-        figure_counter += 1
+content = read("05_Manuscript/manuscript.md")
+
+# 替换 Table 占位符
+while content contains {{Table:\d+}}:
+    replace {{Table:N}} → Table {table_counter}
+    table_counter += 1
+
+# 替换 Figure 占位符
+while content contains {{Figure:\d+}}:
+    replace {{Figure:N}} → Figure {figure_counter}
+    figure_counter += 1
 ```
 
 **示例**:
@@ -248,14 +232,6 @@ outputs:
     files:
       - name: manuscript.md
         format: md
-      - name: sections/01-introduction.md
-        format: md
-      - name: sections/02-methods.md
-        format: md
-      - name: sections/03-results.md
-        format: md
-      - name: sections/04-discussion.md
-        format: md
 handoffs:
   - consumer: clinpub-verifier
     required_files:
@@ -280,7 +256,7 @@ handoffs:
 
 拼接完成后验证：
 
-- [ ] 各段内容完整引入，无段落遗漏
+- [ ] manuscript.md 中 4 个 IMRAD 段落（## Introduction / Methods / Results / Discussion）完整，无段落遗漏
 - [ ] `{{Table:\d+}}` 和 `{{Figure:\d+}}` 全部替换，无残留占位符（regex scan 确认）
 - [ ] `{{Method:\w+}}` 全部替换
 - [ ] Table/Figure 编号连续无跳跃（1,2,3... 非 1,3,5）
@@ -289,5 +265,4 @@ handoffs:
 - [ ] YAML frontmatter 字段非空
 - [ ] word_count > 5000
 - [ ] reference_count 正确
-- [ ] MANIFEST.yaml 声明了所有输出文件
-- [ ] 05_Manuscript/sections/ 下各段文件保留
+- [ ] MANIFEST.yaml 声明了所有输出文件（仅 manuscript.md）

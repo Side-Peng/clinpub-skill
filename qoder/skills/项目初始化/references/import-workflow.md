@@ -41,7 +41,7 @@
 - 02_PreprocessedData/data/cleaned.csv 存在?
 - 03_AnalysisMethods/ 有子目录?
 - 04_Outputs/ 有文件?
-- 05_Manuscript/sections/ 有文件?
+- 05_Manuscript/manuscript.md 存在?（兼容旧项目：若存在 `05_Manuscript/sections/` 文件，一并记录，导入时合并段落到 manuscript.md）
 - Reference/ 有 .bib 文件?
 
 ### 3. 推断角色
@@ -65,11 +65,13 @@
 | analysis_output_figure | `04_Outputs/{method_id}/` |
 | analysis_output_table | `04_Outputs/{method_id}/` |
 | reference_library | `Reference/references.bib` |
-| manuscript_introduction | `05_Manuscript/sections/01-introduction.md` |
-| manuscript_methods | `05_Manuscript/sections/02-methods.md` |
-| manuscript_results | `05_Manuscript/sections/03-results.md` |
-| manuscript_discussion | `05_Manuscript/sections/04-discussion.md` |
+| manuscript_introduction | `05_Manuscript/manuscript.md`（## Introduction 段落） |
+| manuscript_methods | `05_Manuscript/manuscript.md`（## Methods 段落） |
+| manuscript_results | `05_Manuscript/manuscript.md`（## Results 段落） |
+| manuscript_discussion | `05_Manuscript/manuscript.md`（## Discussion 段落） |
 | manuscript_full | `05_Manuscript/manuscript.md` |
+
+**旧项目兼容**：若源项目使用 `05_Manuscript/sections/01-introduction.md` 等分段文件，导入时将其段落内容按 IMRAD 顺序合并追加到 `05_Manuscript/manuscript.md`（带 `## {Section}` 标题），并告知用户已合并。
 
 **方法子目录分组**:
 - "baseline"/"table1" → `01_BaselineTable`
@@ -125,13 +127,13 @@
 - 方法说明缺失 → WARN（Gate 3 必需）
 - 分析代码缺失 → INFO
 
-**Phase 3**: 检查 Introduction / Methods / Results / Discussion 章节
-- 部分章节存在 → 标记已有章节，建议补全缺失
+**Phase 3**: 检查 manuscript.md 中 Introduction / Methods / Results / Discussion 段落
+- 部分段落存在 → 标记已有段落，建议补全缺失
 
 **起始 Phase 判断**:
 - 有 cleaned.csv 但无分析输出 → 建议 Phase 2
 - 有分析输出但无手稿 → 建议 Phase 3
-- 有手稿章节 → 建议 Phase 3（续写）或 Phase 4（如完整）
+- 有手稿（manuscript.md）→ 建议 Phase 3（续写）或 Phase 4（如完整）
 
 ### 6. 部分框架讨论
 

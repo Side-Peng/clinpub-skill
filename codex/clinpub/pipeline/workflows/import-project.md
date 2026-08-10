@@ -59,7 +59,7 @@ Scan the project root directory and first-level subdirectories for research arti
 - Does `02_PreprocessedData/data/cleaned.csv` exist?
 - Does `03_AnalysisMethods/` have subdirectories?
 - Does `04_Outputs/` have files?
-- Does `05_Manuscript/sections/` have files?
+- Does `05_Manuscript/manuscript.md` exist?（兼容旧项目：若存在 `05_Manuscript/sections/` 文件，一并记录，导入时合并段落到 manuscript.md）
 - Does `Reference/` have a .bib file?
 
 Store all findings for role inference in next step.
@@ -94,12 +94,14 @@ Apply heuristic rules from `@./pipeline/references/import-heuristics.md` to each
 | `analysis_output_table` | `04_Outputs/{method_id}/` |
 | `reference_library` | `Reference/references.bib` |
 | `citation_map` | `Reference/citation_map.md` |
-| `manuscript_introduction` | `05_Manuscript/sections/01-introduction.md` |
-| `manuscript_methods` | `05_Manuscript/sections/02-methods.md` |
-| `manuscript_results` | `05_Manuscript/sections/03-results.md` |
-| `manuscript_discussion` | `05_Manuscript/sections/04-discussion.md` |
-| `manuscript_abstract` | `05_Manuscript/sections/00-abstract.md` |
+| `manuscript_introduction` | `05_Manuscript/manuscript.md`（## Introduction 段落） |
+| `manuscript_methods` | `05_Manuscript/manuscript.md`（## Methods 段落） |
+| `manuscript_results` | `05_Manuscript/manuscript.md`（## Results 段落） |
+| `manuscript_discussion` | `05_Manuscript/manuscript.md`（## Discussion 段落） |
+| `manuscript_abstract` | `05_Manuscript/manuscript.md`（Abstract 段落） |
 | `manuscript_full` | `05_Manuscript/manuscript.md` |
+
+**旧项目兼容**：若源项目使用 `05_Manuscript/sections/01-introduction.md` 等分段文件，导入时将其段落内容按 IMRAD 顺序合并追加到 `05_Manuscript/manuscript.md`（带 `## {Section}` 标题），并告知用户已合并。
 
 **Special handling for method subdirectories**:
 When multiple analysis output files are detected, attempt to group them by method type:
@@ -209,7 +211,7 @@ Analyze completeness of each Phase based on confirmed file mapping.
 **Starting Phase determination** (based on highest Phase with core artifacts):
 - Has cleaned.csv (Phase 1 core) but no analysis outputs → suggest Phase 2
 - Has analysis outputs (Phase 2 core) but no manuscript → suggest Phase 3
-- Has manuscript sections (Phase 3 core) → suggest Phase 3 (续写) or Phase 4 (if complete)
+- Has manuscript (Phase 3 core) → suggest Phase 3 (续写) or Phase 4 (if complete)
 
 **Present gap analysis report**:
 
@@ -298,7 +300,7 @@ Create the standard clinpub directory structure and migrate imported files.
    03_AnalysisMethods/{method_id}/    ← for each confirmed method group
    04_Outputs/{method_id}/            ← for each confirmed method group
    Reference/
-   05_Manuscript/sections/
+   05_Manuscript/
    05_Manuscript/response_letters/
    ```
 

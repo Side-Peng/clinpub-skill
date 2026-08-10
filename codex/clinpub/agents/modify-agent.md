@@ -159,12 +159,10 @@ Status: {N} succeeded / {M} failed
 After successful modifications, check if manuscript exists:
 
 ```bash
-MANUSCRIPT_DIR="$PROJECT_DIR/05_Manuscript"
-RESULTS_SECTION="$MANUSCRIPT_DIR/sections/03-results.md"
-METHODS_SECTION="$MANUSCRIPT_DIR/sections/02-methods.md"
+MANUSCRIPT_FILE="$PROJECT_DIR/05_Manuscript/manuscript.md"
 ```
 
-If manuscript sections exist:
+If the manuscript exists:
 1. Identify which results paragraphs reference the modified method(s)
 2. Update numerical values (effect sizes, p-values, CI bounds) in-place
 3. Update figure/table references if new outputs were added

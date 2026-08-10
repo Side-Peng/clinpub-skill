@@ -34,7 +34,7 @@ Phase 3: IMRAD manuscript writing with dual-mode support.
 - **D-06 文献搜索**: reference-agent 搜索文献，更新共享引用库
 - **D-09 引用库**: 全局统一编号，共享引用库（Reference/reference_library.json），写各段时查询已有引用
 - **D-11 占位符**: 使用 {{Table:N}} {{Figure:N}} {{Method:name}} {{Section:name}} 进行交叉引用
-- **D-15 输出**: 05_Manuscript/manuscript.md 最终稿 + 05_Manuscript/sections/ 各段独立文件
+- **D-15 输出**: 05_Manuscript/manuscript.md 唯一终稿（各段按 IMRAD 顺序直接追加写入，不生成 sections/ 目录）
 </objective>
 
 <execution_context>
@@ -65,7 +65,7 @@ Execute the writing workflow from pipeline/workflows/writing.md end-to-end.
 - 每段撰写前 reference-agent 完成文献搜索，引用库不重复
 - 逐步模式：每段撰写后用户审阅确认才进入下一段
 - 一键成稿模式：全部段落完成后统一呈现审阅
-- 各段写入 05_Manuscript/sections/ 独立文件
+- 各段按 IMRAD 顺序追加写入 05_Manuscript/manuscript.md（不生成 sections/ 独立文件）
 - 各段使用占位符进行交叉引用（{{Table:N}} {{Figure:N}} {{Method:name}}）
 - 各段引用通过共享引用库管理，不重复
 - 所有引用有 DOI

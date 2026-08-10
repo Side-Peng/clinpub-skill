@@ -24,12 +24,11 @@ Before proceeding, verify a manuscript draft exists to improve:
 ```bash
 PROJECT_DIR=$(pwd)
 MANUSCRIPT="$PROJECT_DIR/05_Manuscript/manuscript.md"
-SECTIONS="$PROJECT_DIR/05_Manuscript/sections/"
 OUTPUTS="$PROJECT_DIR/04_Outputs/"
 ```
 
 Checks:
-1. `05_Manuscript/manuscript.md` OR at least one file under `05_Manuscript/sections/` exists — if neither, error: "No manuscript found. Run /clinpub:writing first."
+1. `05_Manuscript/manuscript.md` exists — if not, error: "No manuscript found. Run /clinpub:writing first."
 2. `project_config.yml` exists (for journal tier, language, variables) — if not, warn and continue with defaults.
 
 If checks pass, proceed. `improving` can be invoked repeatedly.
@@ -97,7 +96,7 @@ Execute the confirmed items. Order minimizes cascading failures: analysis re-run
 2. **Figure/table adjustments**: re-render via modify-agent style path (≥300 DPI, English labels).
 3. **Literature additions**: delegate to reference-agent; update `Reference/reference_library.json` + `references.bib` (dedupe, DOIs required).
 4. **Text revision**: delegate to writer-agent for each affected section.
-   - Edit `05_Manuscript/sections/*` and re-concatenate / patch `05_Manuscript/manuscript.md`.
+   - Edit the affected paragraphs in-place in `05_Manuscript/manuscript.md`（以 `## {Section}` 标题定位段落），不重建 sections/ 文件。
    - **Numeric cascade**: patch affected effect sizes, p-values, CI bounds in Results; update Methods if a statistical method changed.
    - Apply the Humanizer checklist inline (no AI-template patterns).
 

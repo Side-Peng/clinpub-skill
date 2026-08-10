@@ -38,7 +38,7 @@ argument-hint: ""
 - **D-06 文献搜索**: 搜索文献，更新共享引用库
 - **D-09 引用库**: 全局统一编号，共享引用库（Reference/reference_library.json）
 - **D-11 占位符**: `{{Table:N}}` `{{Figure:N}}` `{{Method:name}}` `{{Section:name}}`
-- **D-15 输出**: `05_Manuscript/manuscript.md` + `05_Manuscript/sections/` 各段独立文件
+- **D-15 输出**: `05_Manuscript/manuscript.md` 唯一终稿（各段按 IMRAD 顺序直接追加写入，不生成 sections/ 目录）
 
 ---
 
@@ -147,11 +147,8 @@ citation_strategy:
 - 使用共享引用库查询已有引用
 - 使用占位符交叉引用：`{{Table:N}}` `{{Figure:N}}` `{{Method:name}}` `{{Section:name}}`
 - 自然成段论述，不使用 bullet point
-- 每段写入 `05_Manuscript/sections/`:
-  - `01-introduction.md`
-  - `02-methods.md`
-  - `03-results.md`
-  - `04-discussion.md`
+- 每段撰写完成后直接追加写入 `05_Manuscript/manuscript.md`（文件不存在则创建），段首带 `## {段名}` 标题（`## Introduction` / `## Methods` / `## Results` / `## Discussion`），按 IMRAD 顺序累积成完整手稿
+- 不再生成 `05_Manuscript/sections/` 独立段文件：手稿只输出 `05_Manuscript/manuscript.md` 一份文件
 
 **各段写作指导**:
 
@@ -188,7 +185,7 @@ citation_strategy:
 ```
 ## {段名} 初稿完成 — 请审阅
 
-已写入 `05_Manuscript/sections/{文件名}`。
+已追加至 `05_Manuscript/manuscript.md`（`## {段名}` 部分）。
 
 ### 审阅要点
 - [ ] 结构和内容是否符合预期
@@ -248,7 +245,7 @@ citation_strategy:
 
 按顺序执行拼接协议：
 
-1. **段落合并**: 按 IMRAD 顺序读取 sections/ 下 4 个文件
+1. **正文准备**: 各段已在撰写阶段按 IMRAD 顺序直接追加写入 `05_Manuscript/manuscript.md`（带 `## {Section}` 标题），无需文件合并；直接以 manuscript.md 为处理对象
 
 2. **占位符替换**:
    - `{{Table:N}}` → 按 IMRAD 顺序全局编号（Table 1, Table 2...）
@@ -293,7 +290,7 @@ citation_strategy:
 7. 字数在目标期刊限制内
 8. 引用去重完成
 9. MANIFEST.yaml 存在于 `05_Manuscript/`
-10. sections/ 下 4 个段文件全部存在且非空
+10. manuscript.md 中 4 个 IMRAD 段落（## Introduction / Methods / Results / Discussion）全部存在且非空
 
 ---
 
@@ -369,13 +366,12 @@ Phase 3 核验完成
 - 每段撰写前完成文献搜索，引用库不重复
 - 逐步模式：每段撰写后用户审阅确认
 - 一键成稿：全部完成后统一呈现
-- 各段写入 sections/ 独立文件
+- 各段按 IMRAD 顺序追加写入 manuscript.md（不生成 sections/ 独立文件）
 - 各段使用占位符交叉引用
 - 所有引用有 DOI
 - 全文 >5000 字，自然成段论述
 - 无 AI 模板模式（Humanizer 自检通过）
 - manuscript.md 存在，包含 YAML frontmatter 和完整 IMRAD 结构
-- sections/ 下 4 个段文件保留
 - 无残留占位符
 - 引用从 [1] 连续编号，文末 References 区完整
 - word_count > 5000, reference_count >= 20

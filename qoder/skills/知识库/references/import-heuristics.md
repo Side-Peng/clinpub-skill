@@ -97,40 +97,40 @@ Signals are evaluated in this order (highest weight first):
 
 ## Document Files (.md, .docx, .doc, .tex, .bib, .ris)
 
-### Role: `manuscript_introduction` → `05_Manuscript/sections/01-introduction.md`
+### Role: `manuscript_introduction` → `05_Manuscript/manuscript.md`（## Introduction 段落）
 
 | Signal type | Pattern | Confidence |
 |------------|---------|------------|
-| Directory | Located in `05_Manuscript/sections/` | definite |
+| Directory | Located in `05_Manuscript/`（manuscript.md 内 `## Introduction` 段落） | definite |
 | Filename | Contains: `intro`, `introduction`, `引言`, `前言`, `背景` | high |
 | Content | First paragraph cites multiple references, discusses disease burden | high |
 | Content | Has subsection headings like "Background", "Rationale" | medium |
 
-### Role: `manuscript_methods` → `05_Manuscript/sections/02-methods.md`
+### Role: `manuscript_methods` → `05_Manuscript/manuscript.md`（## Methods 段落）
 
 | Signal type | Pattern | Confidence |
 |------------|---------|------------|
-| Directory | Located in `05_Manuscript/sections/` | definite |
+| Directory | Located in `05_Manuscript/`（manuscript.md 内 `## Methods` 段落） | definite |
 | Filename | Contains: `method`, `methods`, `方法`, `材料`, `材料与方法` | high |
 | Content | Describes study design, participants, statistical methods | high |
 
-### Role: `manuscript_results` → `05_Manuscript/sections/03-results.md`
+### Role: `manuscript_results` → `05_Manuscript/manuscript.md`（## Results 段落）
 
 | Signal type | Pattern | Confidence |
 |------------|---------|------------|
-| Directory | Located in `05_Manuscript/sections/` | definite |
+| Directory | Located in `05_Manuscript/`（manuscript.md 内 `## Results` 段落） | definite |
 | Filename | Contains: `result`, `results`, `结果`, `发现` | high |
 | Content | Contains statistical values (p=, CI=, HR=, OR=) and figure references | high |
 
-### Role: `manuscript_discussion` → `05_Manuscript/sections/04-discussion.md`
+### Role: `manuscript_discussion` → `05_Manuscript/manuscript.md`（## Discussion 段落）
 
 | Signal type | Pattern | Confidence |
 |------------|---------|------------|
-| Directory | Located in `05_Manuscript/sections/` | definite |
+| Directory | Located in `05_Manuscript/`（manuscript.md 内 `## Discussion` 段落） | definite |
 | Filename | Contains: `discussion`, `讨论`, `conclusion`, `结论` | high |
 | Content | Compares with other studies, discusses limitations and implications | high |
 
-### Role: `manuscript_abstract` → `05_Manuscript/sections/00-abstract.md`
+### Role: `manuscript_abstract` → `05_Manuscript/manuscript.md`（Abstract 段落）
 
 | Signal type | Pattern | Confidence |
 |------------|---------|------------|
