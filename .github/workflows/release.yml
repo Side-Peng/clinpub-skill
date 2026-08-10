@@ -22,7 +22,7 @@ jobs:
             dir: codex/clinpub
             plugin: .codex-plugin/plugin.json
             commands: skills/clinpub-*/SKILL.md
-            hooks: hooks/hooks.json
+            hooks: ""  # codex plugin.json has no hooks field; hooks.json removed as dead config
           - name: qoder
             dir: qoder
             plugin: .qoder-plugin/plugin.json
@@ -53,8 +53,7 @@ jobs:
 
           # Validate hooks
           # claude-code: hooks declared inline in plugin.json (official "or" option)
-          # codex: hooks declared in hooks/hooks.json
-          # qoder: uses PreToolUse config, no hooks.json
+          # codex / qoder: no hooks config (codex plugin.json has no hooks field)
           if [ "${{ matrix.platform.hooks }}" = "inline" ]; then
             echo "Checking hooks (inline in plugin.json)..."
             node -e "
@@ -97,7 +96,7 @@ jobs:
           SCRIPTS="data_profiler.py ncbi_search.py ncbi_utils.py pubmed_fetch.py pubmed_search.py pmc_fetch.py test_ncbi.py"
           for script in $SCRIPTS; do
             CC_HASH=$(blob_hash "claude-code/scripts/$script")
-            CX_HASH=$(blob_hash "codex/clinpub/scripts/scripts/$script")
+            CX_HASH=$(blob_hash "codex/clinpub/scripts/$script")
             QD_HASH=$(blob_hash "qoder/scripts/$script")
             if [ -n "$CC_HASH" ] && [ "$CC_HASH" = "$CX_HASH" ] && [ "$CX_HASH" = "$QD_HASH" ]; then
               echo "  OK: $script (all platforms match)"
