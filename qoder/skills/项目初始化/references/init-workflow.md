@@ -26,7 +26,8 @@
    - 基线特征表、组间比较、回归分析、生存分析
    - 亚组分析、敏感性分析、相关性分析、ROC 分析
    - 标志物组合、机器学习
-4. **期望输出**: 目标期刊、所需图表类型、语言偏好
+4. **目标投稿期刊（显式询问）**: 使用 AskUserQuestion 询问用户意向投稿期刊——期刊名称 + 级别（Q1/Q2/Q3/Q4）。**不预设或假设任何期刊**。如果用户未决定，接受 "待定"，并注明 论文写作 和 投稿信 会在后续重新确认期刊
+5. **期望输出**: 所需图表类型、语言偏好
 
 **研究类型自动推断**（当用户不确定时）：
 
@@ -92,8 +93,12 @@ project:
   description: "{study_description}"
   design: "{study_type}"
   sample_size: {N}
-  target_journal: "{journal}"
+  target_journal: "{journal}"   # 从步骤 1 用户显式回答写入——不预设；未定时留空/"待定"
   reporting_standard: "STROBE"  # or CONSORT, CARE, etc.
+
+journal:
+  name: "{journal_name}"        # 从步骤 1 用户显式回答写入——不预设
+  tier: "Q1"                    # Q1/Q2/Q3/Q4 — 用户回答的级别，未定时留空
 
 variables:
   outcome: "{outcome_var}"

@@ -2,14 +2,14 @@
 name: 论文写作
 description: "Phase 3: IMRAD manuscript writing with dual-mode support. Supports batch (one-shot) and sequential modes, shared reference library, placeholder cross-references, anti-AI writing rules."
 description_zh: "阶段3：IMRAD论文写作——支持一键成稿和逐步写作双模式，共享引用库，占位符交叉引用，反AI写作规则"
-version: 1.0.0
+version: 2.3.0
 user-invocable: true
 argument-hint: ""
 ---
 
 # 论文写作 — Phase 3
 
-你是资深学术写作顾问，专注于 SCI Q1/Q2 期刊论文撰写。负责完成 IMRAD 论文，支持一键成稿和逐步写作双模式。
+你是资深学术写作顾问，专注于目标期刊论文撰写。负责完成 IMRAD 论文，支持一键成稿和逐步写作双模式。
 
 ## 角色定义
 
@@ -299,15 +299,18 @@ citation_strategy:
 1. 验证 Phase 3 成功标准
 2. 收集写作决策
 3. 生成 `.clinpub/phases/03-writing/MILESTONE.md`
-4. 更新 ROADMAP.md: Phase 3 → Complete, Phase 4 → In Progress
-5. 更新 STATE.md: current_phase → 4
+4. 更新 ROADMAP.md: Phase 3 → Complete（核心管线关闭，无 Phase 4）
+5. 更新 STATE.md: current_phase → complete（核心管线完成）
 6. 请求用户签字
 
 ```
 ────────────────────────────────
 Phase 3 核验完成
 
-请确认：输入 "approved" 进入 Phase 4（审稿模拟），或描述需要调整的地方。
+请确认：输入 "approved" 完成核心管线（Phase 3 为最终阶段）。之后可用独立工具：
+- 稿件改进 → 自审并直接修稿（可反复）
+- 投稿信 → 按目标期刊生成投稿信
+- 同行评审 → 投稿后，录入真实审稿意见并回复 + 修稿
 ────────────────────────────────
 ```
 

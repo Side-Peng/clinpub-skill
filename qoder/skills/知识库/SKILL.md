@@ -1,6 +1,6 @@
 ---
 name: 知识库
-version: 1.0.0
+version: 2.3.0
 description: Internal knowledge base for clinpub pipeline — analysis methods, R patterns, journal standards, reporting guidelines, agent contracts, and templates.
 description_zh: 临床研究发表管线的内部知识库——分析方法、R代码模板、期刊标准、报告规范、Agent契约和项目模板。
 user-invocable: false
@@ -42,6 +42,7 @@ user-invocable: false
 
 ### 项目模板
 - [项目配置模板](references/templates/project_config.yml) — 主配置文件
+- [分析规格模板](references/templates/spec.md) — 分析方法规格书（数据清洗生成）
 - [状态模板](references/templates/state.md) — STATE.md模板
 - [路线图模板](references/templates/roadmap.md) — ROADMAP.md模板
 - [项目结构](references/templates/project.md) — 目录结构规范

@@ -2,7 +2,7 @@
 name: 项目初始化
 description: "Phase 0: Initialize or import a clinical research project. Detects existing artifacts and imports into clinpub structure, or starts fresh with study design discussion."
 description_zh: "阶段0：初始化或导入临床研究项目，讨论研究设计、变量、分析方法，生成配置文件和目录结构"
-version: 1.0.0
+version: 2.3.0
 user-invocable: true
 argument-hint: ""
 ---
@@ -63,7 +63,8 @@ argument-hint: ""
 1. **研究基础**: 标题、研究类型、目标、假设
 2. **数据概览**: 来源、样本量、关键变量（结局、暴露、协变量）
 3. **分析方法**: 从候选池中选择（基线表、组间比较、回归、生存分析、亚组分析、敏感性分析、相关性、ROC、标志物组合、机器学习）
-4. **期望输出**: 目标期刊、所需图表类型、语言偏好
+4. **目标投稿期刊（显式询问）**: 使用 AskUserQuestion 询问用户意向投稿期刊——期刊名称 + 级别（Q1/Q2/Q3/Q4）。**不预设或假设任何期刊**。如果用户未决定，接受 "待定"，并注明 论文写作 和 投稿信 会在后续重新确认期刊
+5. **期望输出**: 所需图表类型、语言偏好
 
 **研究类型自动推断**（当用户不确定时）：
 - 随机分组变量 → 建议 RCT
@@ -125,6 +126,7 @@ Project_Root/
 
 关键段落：
 - `project`: name, description, study_design, sample_size, target_journal, reporting_standard
+- `journal`: name + tier **从步骤 2 中用户的显式回答写入——不预设**。`project.target_journal` 和 `journal.name` 由该回答写入（用户未定时留空或 "待定"）
 - `variables`: outcome, outcome_type, exposure, covariates, time_variable, event_variable, group_variable, id_variable
 - `paths`: 所有目录路径
 - `methods_to_run`: 用户确认的方法（动态编号）
