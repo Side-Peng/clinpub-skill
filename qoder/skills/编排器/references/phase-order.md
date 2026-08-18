@@ -3,14 +3,17 @@
 ## Phase 总览
 
 ```
-Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4
-初始化     数据清洗    统计分析    论文写作    同行评审
+核心管线: Phase 0 → Phase 1 → Phase 2 → Phase 3
+          初始化     数据清洗    统计分析    论文写作（核心管线终点）
 ```
+
+写作（Phase 3）完成即核心管线关闭。之后使用独立工具（无阶段编号）：稿件改进、投稿信、同行评审、分析修改、选题挖掘、阶段里程碑。
 
 ## Phase 0：项目初始化
 - **输入**: 用户的研究想法、原始数据文件（可选）
 - **输出**: `project_config.yml`、`.clinpub/`（PROJECT.md, ROADMAP.md, STATE.md）、标准目录结构
 - **前置条件**: 无
+- **关键询问**: 显式询问目标期刊（名称 + 级别），不预设任何期刊；用户未定时接受"待定"
 - **完成标志**: project_config.yml 存在且关键字段有效（project.name 非默认值, variables.outcome 非空, paths.raw_data 目录存在）
 - **支持导入模式**: 检测到已有研究工件时自动进入
 
@@ -35,17 +38,22 @@ Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4
 
 ## Phase 3：论文写作
 - **输入**: `04_Outputs/`（图表）、`03_AnalysisMethods/`（方法说明）、`Reference/`（文献）
-- **输出**: `05_Manuscript/manuscript.md`、`05_Manuscript/sections/`（各段独立文件）
+- **输出**: `05_Manuscript/manuscript.md`（唯一终稿，各段按 IMRAD 顺序追加写入）
 - **前置条件**: Phase 2 完成（04_Outputs/ 有输出）
-- **完成标志**: manuscript.md 存在，包含完整 IMRAD 结构 + YAML frontmatter
+- **完成标志**: manuscript.md 存在，包含完整 IMRAD 结构；**核心管线关闭**
 - **写作模式**: 一键成稿（batch）或逐步写作（sequential）
 - **引用管理**: 共享引用库 `Reference/reference_library.json`，占位符交叉引用
 
-## Phase 4：同行评审
-- **输入**: `05_Manuscript/manuscript.md`
-- **输出**: `05_Manuscript/final/`（终稿）、响应函
-- **前置条件**: Phase 3 完成（manuscript.md 存在）
-- **完成标志**: final/ 下有修改后终稿 + 响应函
+## 独立工具（无阶段编号，前置条件满足即可调用，可重复）
+
+| 工具 | 前置条件 | 输出 |
+|------|----------|------|
+| `稿件改进` | `05_Manuscript/manuscript.md` 存在 | 更新后的 manuscript.md、improvement_plan.md |
+| `投稿信` | `05_Manuscript/manuscript.md` 存在 | `05_Manuscript/cover_letter.md` |
+| `同行评审` | `05_Manuscript/manuscript.md` 存在 + 用户提供真实审稿意见 | `reviewer_comments.md`、`final/manuscript.md`、`final/response_letter.md` |
+| `分析修改` | Phase 2 分析完成（04_Outputs/ 有方法目录） | 更新后的 `03_AnalysisMethods/` 和 `04_Outputs/` |
+| `选题挖掘` | 原始数据文件存在 | `idea/idea_report.md`、`idea/to_project_config.yml` |
+| `阶段里程碑` | 当前 Phase 交付物就绪 | `.clinpub/phases/{N}-{slug}/MILESTONE.md` |
 
 ## 阶段间通信规则
 
@@ -65,7 +73,7 @@ Project_Root/
 ├── 03_AnalysisMethods/        # Phase 2 — 方法代码 + 方法说明
 ├── 04_Outputs/                # Phase 2 — 图表 + MANIFEST.yaml
 ├── Reference/                 # Phase 3 — 文献（references.bib, citation_map.md）
-├── 05_Manuscript/             # Phase 3-4 — IMRAD 草稿、审稿、终稿
+├── 05_Manuscript/             # Phase 3 + 独立工具 — IMRAD 稿件、投稿信、审稿回复、终稿
 └── project_config.yml         # Phase 0 — 中央配置
 ```
 
@@ -77,4 +85,4 @@ Project_Root/
 - 产出文件列表
 - 用户签字确认
 
-MILESTONE.md 是阶段门控的前提条件，确保后续阶段可以正常访问文件。
+MILESTONE.md 是阶段门控的前提条件，确保后续阶段可以正常访问文件。独立工具（稿件改进、投稿信、同行评审、分析修改）不生成里程碑——它们可重复、不关闭任何阶段。
