@@ -2,7 +2,7 @@
 name: 分析修改
 description: "Modify completed analysis outputs or add new analysis methods -- figure style, statistical method changes, or new method implementation"
 description_zh: "修改已完成的分析输出或新增分析方法——支持图表样式调整（颜色/字体/布局）、统计方法变更（检验更换/变量替换/参数调整）和新增分析方法"
-version: 1.0.0
+version: 2.3.0
 user-invocable: true
 argument-hint: "[方法ID或简要描述，留空则交互选择]"
 ---

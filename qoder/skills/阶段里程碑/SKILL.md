@@ -2,7 +2,7 @@
 name: 阶段里程碑
 description: "Phase gate review with deliverable verification and user sign-off"
 description_zh: "阶段门评审——验证交付物、记录决策、获取用户签核、推进到下一阶段"
-version: 1.0.0
+version: 2.3.0
 user-invocable: true
 argument-hint: "<阶段编号>"
 ---

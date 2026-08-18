@@ -2,7 +2,7 @@
 name: 选题挖掘
 description: "Topic mining from clinical data tables with PubMed gap analysis"
 description_zh: "从临床数据表（CSV/XLSX）出发，分析变量结构与文献空白，生成3-5个候选研究课题及可行性评分"
-version: 1.0.0
+version: 2.3.0
 user-invocable: true
 argument-hint: "<数据文件路径>"
 ---

@@ -2,7 +2,7 @@
 name: 数据清洗
 description: "Phase 1: Data preparation and exploratory data analysis. Clean raw data, handle missing values, detect outliers, create derived variables, generate data quality report, produce cleaned.csv."
 description_zh: "阶段1：数据准备与探索性分析——清洗原始数据、处理缺失值、检测异常值、创建衍生变量、生成质量报告"
-version: 1.0.0
+version: 2.3.0
 user-invocable: true
 argument-hint: ""
 ---

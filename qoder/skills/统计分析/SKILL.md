@@ -2,7 +2,7 @@
 name: 统计分析
 description: "Phase 2: Adaptive statistical analysis with wave-based execution. Diagnoses data structure, proposes customized analysis plan, executes in dependency order, outputs publication-grade figures and tables."
 description_zh: "阶段2：自适应统计分析——诊断数据结构、提出定制分析方案、按波次依赖顺序执行、输出出版级图表"
-version: 1.0.0
+version: 2.3.0
 user-invocable: true
 argument-hint: ""
 ---
