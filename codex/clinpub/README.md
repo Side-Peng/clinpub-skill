@@ -1,20 +1,32 @@
 ﻿# ClinPub - Clinical Publication Pipeline
 
-End-to-end clinical data analysis and publication pipeline for SCI Q1/Q2 journals.
+End-to-end clinical data analysis and publication pipeline. Adapts to any clinical research article type.
 
 ## Overview
 
-ClinPub is a structured clinical data analysis and publication pipeline that acts as a senior medical statistician and academic writing consultant. It processes patient-level data through 5 phases to produce publication-ready manuscripts targeting SCI Q1/Q2 journals.
+ClinPub is a structured clinical data analysis and publication pipeline that acts as a senior medical statistician and academic writing consultant. Core pipeline Phase 0-3 processes patient-level data through initialization, data cleaning, adaptive statistical analysis, and IMRAD manuscript writing; standalone tools handle manuscript improvement, cover-letter generation, and post-submission reviewer response.
 
 ## Pipeline Phases
 
 | Phase | Command | Purpose | Key Output |
 |-------|---------|---------|------------|
-| 0 | `clinpub:initialize` | Project initialization or import | `project_config.yml` |
+| 0 | `clinpub:init` | Project initialization or import (target journal explicitly asked) | `project_config.yml` |
 | 1 | `clinpub:data-prep` | Data cleaning and EDA | `cleaned.csv` |
 | 2 | `clinpub:analysis` | Statistical analysis | `04_Outputs/` |
-| 3 | `clinpub:writing` | IMRAD manuscript writing | `manuscript.md` |
-| 4 | `clinpub:review` | Peer review simulation | `final/` |
+| 3 | `clinpub:writing` | IMRAD manuscript writing (core pipeline end) | `manuscript.md` |
+
+## Standalone Tools
+
+Invocable anytime the prerequisite exists (do not occupy a phase number):
+
+| Tool | Purpose | Key Output |
+|------|---------|------------|
+| `clinpub:improving` | Self-review draft → revision plan → direct revision (text + analysis re-run) | updated `manuscript.md` |
+| `clinpub:coverletter` | Tailored submission cover letter from target-journal requirements | `cover_letter.md` |
+| `clinpub:review` | Post-submission: real reviewer comments → response letter + revision | `final/` |
+| `clinpub:modify` | Modify completed analyses or add new analysis methods | updated `04_Outputs/` |
+| `clinpub:data2idea` | Topic mining from data | idea report |
+| `clinpub:milestone` | Phase gate verification | `MILESTONE.md` |
 
 ## Installation
 
@@ -43,14 +55,18 @@ codex plugin install clinpub
 
 ```bash
 # Start with Phase 0
-clinpub:initialize
+clinpub:init
 
 # After Phase 0 completes and user signs off, proceed to Phase 1
 clinpub:data-prep
 
-# Continue one phase at a time...
+# Continue one phase at a time until the manuscript is drafted
 clinpub:analysis
 clinpub:writing
+
+# After drafting, use standalone tools as needed
+clinpub:improving
+clinpub:coverletter
 clinpub:review
 
 # Topic mining from data
@@ -72,7 +88,7 @@ clinpub:modify [method ID]
 ## Architecture
 
 ```
-skills/*/SKILL.md          → Skill definitions (11 skills)
+skills/*/SKILL.md          → Skill definitions (13 skills)
 agents/*.md                → Specialized AI agent role cards (8 agents)
 pipeline/
   workflows/*.md           → Phase orchestration logic
@@ -90,12 +106,12 @@ hooks/*.js/*.sh            → Hook implementation scripts
 |------|-------|
 | Data cleaning, statistical analysis, figures | `analyst-agent` |
 | Literature search, citation management | `reference-agent` |
-| Manuscript drafting, peer review simulation | `writer-agent` |
+| Manuscript drafting, improvement, revision | `writer-agent` |
 | Topic mining from data | `topic-miner-agent` |
 | Research analysis planning | `clinpub-planner` |
 | Analysis execution with atomic commits | `clinpub-executor` |
 | Statistical verification | `clinpub-verifier` |
-| Analysis output modification | `modify-agent` |
+| Analysis output modification / method addition | `modify-agent` |
 
 ## License
 

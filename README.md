@@ -19,16 +19,18 @@
 | 平台 | 目录 | 状态 | 安装方式 |
 |------|------|------|----------|
 | [Claude Code](claude-code/) | `claude-code/` | ✅ v2.3.0 稳定版 | `claude plugin install clinpub`（Marketplace）或 `claude --plugin-dir ./claude-code`（本地） |
-| [OpenAI Codex](codex/) | `codex/clinpub/` | ✅ v2.2.0 稳定版 | `codex plugin install ./codex/clinpub`（本地）或 Marketplace |
-| [Qoder](qoder/) | `qoder/` | v1.0.0 首发版 | 应用内导入插件，或复制 `qoder/` 到插件目录 |
+| [OpenAI Codex](codex/) | `codex/clinpub/` | ✅ v2.3.0 稳定版 | `codex plugin install ./codex/clinpub`（本地）或 Marketplace |
+| [Qoder](qoder/) | `qoder/` | ✅ v2.3.0 稳定版 | 应用内导入插件，或复制 `qoder/` 到插件目录 |
 
 ## 📋 管线概览
 
 ```
-Phase 0          Phase 1         Phase 2           Phase 3         Phase 4
-项目初始化  →  数据清洗  →  统计分析  →  论文写作  →  同行评审
-                ↓             ↓              ↓            ↓
-              cleaned.csv    图表+表格     manuscript.md    final/
+Phase 0          Phase 1         Phase 2           Phase 3
+项目初始化  →  数据清洗  →  统计分析  →  论文写作（核心管线终点）
+                ↓             ↓              ↓
+              cleaned.csv    图表+表格     manuscript.md
+
+独立工具（不占 Phase）：improving（改进）· coverletter（投稿信）· review（投稿后审稿回复）· modify（分析修改）· data2idea（选题挖掘）
 ```
 
 ### 核心能力
@@ -97,13 +99,13 @@ Qoder 复用 Claude 插件缓存目录结构（`~/.claude/plugins/cache/clinpub/
 Windows PowerShell（在仓库根目录执行）：
 
 ```powershell
-Copy-Item -Recurse .\qoder\ "$env:USERPROFILE\.claude\plugins\cache\clinpub\clinpub\1.0.0\"
+Copy-Item -Recurse .\qoder\ "$env:USERPROFILE\.claude\plugins\cache\clinpub\clinpub\2.3.0\"
 ```
 
 macOS / Linux：
 
 ```bash
-cp -r qoder/ ~/.claude/plugins/cache/clinpub/clinpub/1.0.0/
+cp -r qoder/ ~/.claude/plugins/cache/clinpub/clinpub/2.3.0/
 ```
 
 安装后在对话中 `@编排器` 启动项目，或 `@项目初始化` 开始新项目。
@@ -139,7 +141,7 @@ clinpub/
 | Topic Miner Agent | Python | 数据画像、文献扫描、候选课题生成 |
 | Analyst Agent | R / Python | 数据清洗、统计分析、图表生成 |
 | Reference Agent | Python | 文献搜索（PubMed）、PDF 阅读、引用管理 |
-| Writer Agent | — | IMRAD 论文撰写、图表整合、模拟评审 |
+| Writer Agent | — | IMRAD 论文撰写、图表整合、改进与投稿后修订 |
 | Clinpub Planner | — | 研究分析规划（波次依赖图） |
 | Clinpub Executor | R / Python | 计划执行（原子提交） |
 | Clinpub Verifier | — | 跨阶段验证（15 种模式） |
@@ -147,7 +149,7 @@ clinpub/
 
 ## 📚 命令参考
 
-> 下表命令行为以 **Claude Code 版本 v2.3.0** 为准；codex / qoder 版本暂未同步本次改动（其 `review` 仍为经典“同行评审模拟”）。
+> 下表命令行为以 **v2.3.0** 为准，三平台（claude-code / codex / qoder）均已同步；Codex 中 Phase 0 技能名为 `clinpub:init`。
 
 | 命令 | 阶段 | 描述 |
 |------|------|------|
@@ -174,7 +176,7 @@ clinpub/
 | IRB / 伦理 | Phase 0 → 1 | IRB 批准、去标识化、知情同意 |
 | 数据质量 | Phase 1 → 2 | cleaned.csv 完整性、缺失率、样本量 |
 | 分析有效性 | Phase 2 → 3 | 所有方法已执行、效应量已报告 |
-| 投稿准备 | Phase 4 → 提交 | IMRAD 完整、图表 ≥300 DPI、所有引用有 DOI |
+| 投稿准备 | Phase 3 → 提交 | IMRAD 完整、图表 ≥300 DPI、所有引用有 DOI |
 
 ## 📊 支持的研究类型
 

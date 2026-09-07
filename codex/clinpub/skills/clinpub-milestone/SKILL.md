@@ -1,4 +1,4 @@
-﻿---
+---
 name: clinpub-milestone
 description: "Phase auto-verification. Review completed phase deliverables, verify success criteria, record decisions, and auto-advance to next phase. Generates MILESTONE.md and updates ROADMAP.md."
 ---
@@ -20,8 +20,10 @@ This is the VERIFY step of the DISCUSS → PLAN → EXECUTE → VERIFY lifecycle
 Execute the milestone workflow from pipeline/workflows/milestone.md end-to-end.
 
 Triggers:
-- **Auto**: Called at the end of each phase workflow (init-project, data-prep, analysis, writing, review)
-- **Manual**: User can invoke clinpub:milestone <N> at any time to check phase status
+- **Auto**: Called at the end of each core phase workflow (init-project, data-prep, analysis, writing)
+- **Manual**: User can invoke `clinpub:milestone <N>` at any time to check phase status (Phase 0-3 only)
+
+Phase 3（writing）是最后一个编号阶段；独立工具（improving / coverletter / review / modify / data2idea）不使用 milestone 门控。
 
 ## Success Criteria
 

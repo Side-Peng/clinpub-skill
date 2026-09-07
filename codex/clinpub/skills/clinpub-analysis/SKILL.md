@@ -1,6 +1,6 @@
 ---
 name: clinpub-analysis
-description: "Phase 2: Adaptive statistical analysis. Claude diagnoses data structure (groups, timepoints, outcome types), proposes a customized analysis plan, discusses with user, and executes in dependency order. Each method outputs figure + table + README with publication-grade standards."
+description: "Phase 2: Adaptive statistical analysis. Diagnose data structure (groups, timepoints, outcome types), propose a customized analysis plan, discuss with user, and execute in dependency order. Each method outputs figure + table + README with publication-grade standards."
 ---
 
 # ClinPub Analysis

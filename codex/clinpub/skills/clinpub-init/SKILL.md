@@ -1,6 +1,6 @@
 ---
 name: clinpub-init
-description: "Phase 0: Initialize or import a clinical research project. Detect existing artifacts and import into clinpub structure, or start fresh. Discuss study design, variables, analysis methods with user; generate project_config.yml, directory structure, and .clinpub/ artifacts."
+description: "Phase 0: Initialize or import a clinical research project. Detect existing artifacts and import into clinpub structure, or start fresh. Discuss study design, variables, analysis methods with user, and explicitly ask for the target submission journal (no journal is preset — adapts to any clinical research article); generate project_config.yml, directory structure, and .clinpub/ artifacts."
 ---
 
 # ClinPub Init
@@ -21,7 +21,7 @@ Execute the workflow from `pipeline/workflows/init-project.md`:
 1. Detect import mode: scan project root for existing research artifacts (CSV/XLSX/PNG/MD/BIB/R/Py files, standard clinpub directories)
 2. IF import mode detected → execute import-project.md workflow (scan → infer roles → confirm mapping → gap analysis → adapt structure → generate config → milestone)
 3. IF no artifacts found → execute standard initialization:
-   a. Discuss research framework with user (study type, variables, analysis methods, target journal)
+   a. Discuss research framework with user (study type, variables, analysis methods); explicitly ask for the target submission journal (name + tier) — do not preset, this pipeline adapts to any clinical research article type
    b. Create standard project directory structure
    c. Generate project_config.yml
    d. Create .clinpub/ planning artifacts (PROJECT.md, ROADMAP.md, STATE.md)

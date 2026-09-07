@@ -1,6 +1,6 @@
 ---
 name: clinpub-writing
-description: "Phase 3: IMRAD manuscript writing. Supports two modes: (1) batch mode (一鍵成稿) - bulk reference search then bulk writing with single final review; (2) sequential mode - per-section search, write, and user review. Shared reference library for deduplication. Placeholder-based cross-references. Final concatenation produces manuscript.md with YAML frontmatter."
+description: "Phase 3: IMRAD manuscript writing. Supports two modes: (1) batch mode (一键成稿) - bulk reference search then bulk writing with single final review; (2) sequential mode - per-section search, write, and user review. Shared reference library for deduplication. Placeholder-based cross-references. Final concatenation produces manuscript.md with YAML frontmatter."
 ---
 
 # ClinPub Writing
@@ -11,7 +11,7 @@ Phase 3: IMRAD manuscript writing with dual-mode support.
 
 四段（Introduction → Methods → Results → Discussion）撰写引文后拼接为终稿。支持两种写作模式：
 
-### 一鍵成稿（batch）
+### 一键成稿（batch）
 确认写作大纲后自动执行：批量文献搜索（4段）→ 批量撰写（4段）→ 统一呈现终稿审阅。适合对写作框架有信心、希望快速出稿的场景。
 
 ### 逐步写作（sequential）
@@ -44,7 +44,7 @@ Execute the writing workflow from `pipeline/workflows/writing.md` end-to-end.
 1. **引文策略确认** (`discuss_citation_strategy`): 与用户确认各段引文数量、时间范围、IF 偏好，写入 project_config.yml
 2. **写作计划讨论** (`discuss_writing_plan`): 确认核心论点、目标期刊、手稿结构、图表安排
 3. **写作模式选择** (`choose_writing_mode`): 向用户呈现两种模式——
-   - 一鍵成稿（batch）→ 跳过逐步流程，直接执行 `batch_writing`（批量文献搜寻 → 批量撰写 → 统一审阅）
+   - 一键成稿（batch）→ 跳过逐步流程，直接执行 `batch_writing`（批量文献搜寻 → 批量撰写 → 统一审阅）
    - 逐步写作（sequential）→ 执行 `reference_pre_search` + `sequential_section_writing`（逐段：文献搜寻 → 撰写 → 用户审阅）
 4. 按用户选择的模式执行撰写（IMRAD 顺序：Introduction → Methods → Results → Discussion）
 5. 终稿拼接 (`concatenate_manuscript`): 占位符替换 + 引文重编号 + YAML frontmatter
@@ -56,7 +56,7 @@ Execute the writing workflow from `pipeline/workflows/writing.md` end-to-end.
 - 四个 IMRAD 段按顺序完成撰写（Intro → Methods → Results → Discussion）
 - 每段撰写前 reference-agent 完成文献搜索，引文库不重复
 - 逐步模式：每段撰写后用户审阅确认才进入下一段
-- 一鍵成稿模式：全部段落完成后统一呈现审阅
+- 一键成稿模式：全部段落完成后统一呈现审阅
 - 各段按 IMRAD 顺序追加写入 05_Manuscript/manuscript.md（不生成 sections/ 独立文件）
 - 各段使用占位符进行交叉引用（{{Table:N}} {{Figure:N}} {{Method:name}}）
 - 各段引文通过共享引文库管理，不重复

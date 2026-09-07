@@ -21,7 +21,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [2.3.0] - 2026-07-28
 
-> 本次改动仅作用于 **Claude Code 版本**（`claude-code/`）。codex / qoder 版本暂未同步。
+> 本次改动最初作用于 **Claude Code 版本**（`claude-code/`）；qoder 已于 2026-08-18 同步至 v2.3.0，OpenAI Codex 已于 2026-09-07 同步至 v2.3.0。
 
 ### Added — Claude Code
 - **`/clinpub:improving`**: 独立的论文持续改进工具——自审稿件 → 生成修改计划 → 用户确认 → 直接修稿（全文 + 分析代码重跑 + 数值级联）。不写回复信、不模拟审稿人，可反复调用。新增 `commands/improving.md` 与 `pipeline/workflows/improving.md`。
@@ -33,6 +33,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **管线收敛为 Phase 0-3**: 写作（Phase 3）为核心管线终点；improving / coverletter / review 与 modify 一样为“随时可调用”的独立工具，不占 Phase 编号。相应更新 hooks（workflow-guard.js / phase-boundary.sh）、编排器（overview / do / next-step）、门控（gates.md）、里程碑（milestone.md）及相关参考文档。
 - **文案去期刊硬绑定**: 移除文档/清单中的 “SCI Q1/Q2”“simulated peer review” 硬绑定表述。
 - **版本**: `2.2.1 → 2.3.0`（claude-code 插件与 npm 元数据）。
+
+### Added — OpenAI Codex
+- **`clinpub:improving`**: 独立的论文持续改进工具——自审稿件 → 生成修改计划 → 用户确认 → 直接修稿（全文 + 分析代码重跑 + 数值级联）。不写回复信、不模拟审稿人，可反复调用。新增 `codex/clinpub/skills/clinpub-improving/` 与 `pipeline/workflows/improving.md`。
+- **`clinpub:coverletter`**: 依据初始化设定的目标期刊，搜集期刊投稿要求并生成量身定制的 Cover Letter（含离线回退）。新增 `codex/clinpub/skills/clinpub-coverletter/` 与 `pipeline/workflows/coverletter.md`。
+
+### Changed — OpenAI Codex
+- **`clinpub:review` 改为“投稿后”流程**: 由“模拟审稿”改为处理用户提供的真实审稿意见——录入意见 → 撰写逐条回复信 + 改进方向 → 用户确认 → 调用 `improving` 执行修稿。改写 `codex/clinpub/skills/clinpub-review/` 与 `pipeline/workflows/review.md`。
+- **初始化显式询问目标期刊**: `clinpub-init` 将目标期刊提升为必问项，不再预设；适配任意临床研究文章类型。
+- **管线收敛为 Phase 0-3**: 写作（Phase 3）为核心管线终点；improving / coverletter / review 与 modify 一样为独立工具，不占 Phase 编号。同步更新编排器（clinpub-do / next-step / overview）、门控（gates.md）、里程碑（milestone.md）及相关参考文档。
+- **文案去期刊硬绑定**: 移除 Codex 文档/清单中的 “SCI Q1/Q2” 与 “simulated peer review” 硬绑定表述。
+- **版本**: `2.2.0 → 2.3.0`（`codex/clinpub/.codex-plugin/plugin.json` 与 `codex/marketplace.json`）。
 
 ## [2.2.1] - 2026-07-10
 

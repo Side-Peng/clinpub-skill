@@ -1,0 +1,36 @@
+---
+name: clinpub-improving
+description: "Continuously improve a manuscript draft. Self-review the draft, produce a concrete revision plan, confirm with user, then directly revise the manuscript (full text + analysis code re-run + numeric cascade). No response letter, no simulated reviewers. Standalone tool — invocable anytime a manuscript exists; repeatable. Triggers: improve/polish/refine the paper, self-review before submission."
+---
+
+# ClinPub Improving
+
+Standalone manuscript improvement tool. Help the researcher continuously improve the paper during or after writing:
+
+1. **Self-review**: assess the current draft (statistics, sample size, confounding, interpretation, language, citations, figures, reporting standards) and classify findings Major/Minor.
+2. **Revision plan**: turn findings into a concrete, itemized plan (text edits, analysis re-runs, figure changes, new citations).
+3. **Direct revision**: after user confirmation, execute changes across BOTH the manuscript text AND the underlying analysis code (re-run + numeric cascade).
+
+Does NOT write a response letter and does NOT simulate reviewers. For post-submission reviewer comments, use `clinpub:review`.
+
+## Execution Context
+
+- Workflow: `pipeline/workflows/improving.md`
+- Workflow: `pipeline/workflows/modify.md`
+- References: `pipeline/references/journal_standards.md`
+- Agents: `agents/writer-agent.md`, `agents/modify-agent.md`
+
+## Process
+
+Execute the improving workflow from `pipeline/workflows/improving.md` end-to-end.
+
+Prerequisite: a manuscript draft exists (`05_Manuscript/manuscript.md`). If not, tell the user to run `clinpub:writing` first.
+
+## Success Criteria
+
+- Self-review findings (Major/Minor) recorded in `05_Manuscript/improvement_plan.md`
+- Itemized revision plan confirmed by user before any change
+- Text revised and, where needed, analysis re-run with numbers cascaded into the manuscript
+- New citations (if any) added with DOIs; reference library de-duplicated
+- Revised manuscript passes integrity checks (IMRAD, DOIs, figures exist, no placeholders, Humanizer)
+- No response letter / no simulated reviewers; tool remains repeatable

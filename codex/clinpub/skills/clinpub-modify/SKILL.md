@@ -1,14 +1,14 @@
 ---
 name: clinpub-modify
-description: "Modify completed analysis outputs. Clarifies modification scope (figure style, statistical method, variables), executes changes, verifies outputs, and records history in PLAN.md. Can be invoked from any phase. Triggers: modify figures, change analysis method, adjust chart style, replace variables."
+description: "Modify completed analysis outputs or add new analysis methods. Clarifies scope (figure style, statistical method, variables, new method), executes changes, verifies outputs, and records history in PLAN.md. Can be invoked from any phase. Triggers: modify figures, change analysis method, adjust chart style, replace variables, add new analysis method."
 ---
 
 # ClinPub Modify
 
-Modify completed Phase 2 analysis outputs. Support two categories:
+Modify completed Phase 2 analysis outputs or add new analysis methods. Two core purposes:
 
-1. **Style modifications**: color, font, chart type, layout adjustments (re-render figures)
-2. **Method modifications**: statistical test change, variable replacement, parameter adjustment, new method addition (re-run analysis)
+1. **Modify existing methods**: style modifications (color, font, chart type, layout adjustments — re-render figures) and method modifications (statistical test change, variable replacement, parameter adjustment — re-run analysis)
+2. **Add new methods**: read the current analysis code (`03_AnalysisMethods/`) and cleaned data (`cleaned.csv`), combine with the user's requirements, then design and implement a new analysis method that conforms to clinpub conventions (method ID format, figure config, publication standards)
 
 ## Execution Context
 

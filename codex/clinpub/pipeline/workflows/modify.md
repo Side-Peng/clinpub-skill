@@ -63,6 +63,8 @@ echo "Pre-modification baseline: $PRE_MODIFY_HASH"
 
 Execution order: style changes first (low risk), then variable changes, then method changes, then new methods. This ordering minimizes cascading failures.
 
+**For new methods**: Method ID must follow `{NN}_{MethodName}` format (e.g., `06_SensitivityAnalysis`), bare underscore prefix like `_sensitivity` is prohibited. Both `03_AnalysisMethods/{id}/` and `04_Outputs/{id}/` must be created together.
+
 If a modification requires a package not installed, report and skip. Do not auto-install packages.
 </step>
 
@@ -81,6 +83,8 @@ For each successfully modified method:
 If verification fails for any modification:
 - Report the specific failure
 - Offer to re-run that modification or skip it
+
+**New method post-verification**: Confirm `03_AnalysisMethods/{id}/` and `04_Outputs/{id}/` both exist — if one is missing, create it immediately.
 </step>
 
 <step name="cascade_manuscript_update" priority="medium">

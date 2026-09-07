@@ -1,8 +1,8 @@
 {
-    "version":  "2.2.0",
+    "version":  "2.3.0",
     "name":  "clinpub",
     "skills":  "./skills/",
-    "description":  "End-to-end clinical data analysis and publication pipeline for SCI Q1/Q2 journals. Reads CSV/XLSX data, runs R-based statistical analysis, generates publication-grade figures, searches literature (PubMed), writes IMRAD manuscripts, and simulates peer review.",
+    "description":  "End-to-end clinical data analysis and publication pipeline that adapts to any clinical research article type. Reads CSV/XLSX data, runs R-based statistical analysis, generates publication-grade figures, searches literature (PubMed), writes IMRAD manuscripts, and supports post-writing improvement, cover-letter generation, and post-submission reviewer response.",
     "author":  {
                    "email":  "1304916798@qq.com",
                    "url":  "https://github.com/Side-Peng/clinpub",
@@ -15,11 +15,13 @@
                                            "data-analysis",
                                            "statistical-analysis",
                                            "manuscript-writing",
-                                           "peer-review",
+                                           "manuscript-improvement",
+                                           "cover-letter",
+                                           "peer-review-response",
                                            "literature-search"
                                        ],
-                      "longDescription":  "ClinPub is a structured clinical data analysis and publication pipeline that acts as a senior medical statistician and academic writing consultant. It processes patient-level data through 5 phases to produce publication-ready manuscripts targeting SCI Q1/Q2 journals.",
-                      "shortDescription":  "End-to-end clinical data analysis and publication pipeline for SCI Q1/Q2 journals.",
+                      "longDescription":  "ClinPub is a structured clinical data analysis and publication pipeline that acts as a senior medical statistician and academic writing consultant. Core pipeline Phase 0-3: project initialization/import, data cleaning, adaptive statistical analysis, and IMRAD manuscript writing. Standalone tools cover manuscript improvement, cover-letter generation, and post-submission reviewer response. Adapts to any clinical research article type.",
+                      "shortDescription":  "End-to-end clinical data analysis and publication pipeline for any clinical research article type.",
                       "defaultPrompt":  "Help me analyze clinical data and write a publication.",
                       "category":  "Research"
                   }
